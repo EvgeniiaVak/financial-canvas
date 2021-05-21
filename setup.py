@@ -7,7 +7,7 @@ with open("requirements.txt", "r") as fh:
 
 setuptools.setup(
     name="financial_canvas",
-    version="1.0.1",
+    version="1.0.2",
     author="Evgeniia Vakarina",
     author_email="27793901+EvgeniiaVak@users.noreply.github.com",
     description="Draw interactive candlesticks on browser canvas from Python.",
