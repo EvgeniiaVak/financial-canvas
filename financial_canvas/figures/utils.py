@@ -1,5 +1,8 @@
 from bokeh.models import ColumnDataSource
 
+import importlib.resources as pkg_resources
+from .. import js_callbacks
+
 
 def create_sources(df, selected_from=None, name='main'):
     sources = {}
@@ -22,7 +25,4 @@ def create_sources(df, selected_from=None, name='main'):
 
 
 def read_file(file_name):
-    contents = ""
-    with open(f'financial_canvas/js_collbacks/{file_name}') as f:
-        contents = f.read()
-        return contents
+    return pkg_resources.read_text(js_callbacks, file_name)

@@ -7,7 +7,7 @@ with open("requirements.txt", "r") as fh:
 
 setuptools.setup(
     name="financial_canvas",
-    version="1.0.0",
+    version="1.0.1",
     author="Evgeniia Vakarina",
     author_email="27793901+EvgeniiaVak@users.noreply.github.com",
     description="Draw interactive candlesticks on browser canvas from Python.",
@@ -19,6 +19,6 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    python_requires='>=3.6',
+    python_requires='>=3.7',
     install_requires=requirements,
 )
