@@ -6,7 +6,7 @@ with open("requirements.txt", "r") as fh:
     requirements = [line.strip() for line in fh]
 
 setuptools.setup(
-    name="financial-canvas",
+    name="financial_canvas",
     version="0.0.1",
     author="Evgeniia Vakarina",
     author_email="27793901+EvgeniiaVak@users.noreply.github.com",
