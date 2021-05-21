@@ -13,6 +13,7 @@ setuptools.setup(
     description="Draw interactive candlesticks on browser canvas from Python.",
     long_description=long_description,
     long_description_content_type="text/markdown",
+    include_package_data=True,
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
