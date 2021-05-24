@@ -16,7 +16,7 @@ class Candlestick(CustomFigure):
         y_range_resize_columns (list of str): columns in df to resize y_range by
     '''
 
-    def __init__(self, df, *, selected_from, inc_color=None, dec_color=None, x_range=None):
+    def __init__(self, df, *, selected_from, inc_color=None, dec_color=None, x_range=None, figure_args=None):
         # TODO: update dynamically
         self.y_range_resize_columns = ['open', 'high', 'low', 'close']
 
@@ -55,6 +55,8 @@ class Candlestick(CustomFigure):
 
         x_range = x_range if x_range else (
             full_source.data['index'][0], full_source.data['index'][-1])
+        if figure_args is None:
+            figure_args = {}
         p = bokeh_figure(
             x_axis_type="datetime",
             x_axis_location="above",
@@ -67,6 +69,7 @@ class Candlestick(CustomFigure):
             # ValueError: expected an instance of type Range1d, got DataRange1d(id='1006', ...) of type DataRange1d
             # also used to set up initial zoom if passed
             x_range=x_range,
+            **figure_args
         )
 
         p.toolbar.logo = None
