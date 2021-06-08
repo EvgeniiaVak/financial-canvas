@@ -95,14 +95,17 @@ class MultiCircle(CustomFigure):
         for column, color in zip(columns, colors):
             # TODO: make resizable circles on zoom
             # specifying radius breaks onhover behavor
-            p.circle(
+            updated_scatter_args = dict(
                 x='index', y=column,
                 legend_label=column,
                 name=column,
                 color=color,
-                source=full_source,
                 size=6,
-                **scatter_args,
+                source=full_source,
+            )
+            updated_scatter_args.update(scatter_args)
+            p.circle(
+                **updated_scatter_args,
             )
 
         # legend
