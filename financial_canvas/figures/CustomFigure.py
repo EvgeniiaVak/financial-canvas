@@ -35,7 +35,9 @@ class CustomFigure(object):
         selected_from (pandas.Timestamp) date from which to select
     '''
 
-    def __init__(self, df, *, selected_from):
+    def __init__(self, df, *, selected_from=None):
+        if selected_from is None:
+            selected_from = df.index[0]
         self.sources = create_sources(df, selected_from=selected_from)
         self.selected_from = selected_from
         self.p = None

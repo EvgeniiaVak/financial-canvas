@@ -11,7 +11,8 @@ class Line(CustomFigure):
     Simple line chart with y axis autorange
     '''
 
-    def __init__(self, df, *, selected_from, column_name, figure_args, color=None, x_range=None):
+    def __init__(self, df, *, column_name, figure_args, selected_from=None, color=None, x_range=None):
+
         # TODO: update dynamically
         self.y_range_resize_columns = [column_name]
 

@@ -12,7 +12,7 @@ class PreviewSlider(CustomFigure):
         target_figure (figures.CustomFigure): (optional) if passed will be resized with slider.
     '''
 
-    def __init__(self, df, *, selected_from, target_figure=None):
+    def __init__(self, df, *, selected_from=None, target_figure=None):
         super().__init__(df, selected_from=selected_from)
 
         bokeh_figure = self.get_figure_defaults()

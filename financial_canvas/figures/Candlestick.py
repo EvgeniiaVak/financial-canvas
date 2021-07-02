@@ -16,7 +16,8 @@ class Candlestick(CustomFigure):
         y_range_resize_columns (list of str): columns in df to resize y_range by
     '''
 
-    def __init__(self, df, *, selected_from, inc_color=None, dec_color=None, x_range=None, figure_args=None):
+    def __init__(self, df, *, selected_from=None, inc_color=None, dec_color=None, x_range=None, figure_args=None):
+
         # TODO: update dynamically
         self.y_range_resize_columns = ['open', 'high', 'low', 'close']
 
