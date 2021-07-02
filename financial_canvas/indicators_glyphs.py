@@ -94,10 +94,15 @@ def line_circles(candlestick, column_name, color=None):
     color = color if color else COLOR_PALLETE[2]
     candlestick.y_range_resize_columns.extend([column_name])
 
+    width_ms = dict(day=86400,
+                        hour=3600,
+                        minute=60,
+                        second=1)[candlestick.sources['main'][0].data['index'].resolution] * 500 * .85
+
     candlestick.p.scatter(
         'index', column_name,
         legend_label=column_name,
-        radius=7500,
+        radius=width_ms,
         color=color,
         source=candlestick.sources['main'][0]
     )
