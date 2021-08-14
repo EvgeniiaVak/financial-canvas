@@ -34,7 +34,6 @@ class CustomFigure(object):
         p (bokeh.models.Figure): the plot with glyphs
         selected_from (pandas.Timestamp) date from which to select
     '''
-
     def __init__(self, df, *, selected_from=None):
         if selected_from is None:
             selected_from = df.index[0]
@@ -82,13 +81,13 @@ class CustomFigure(object):
                     source=self.sources['main'][0],
                     columns=self.y_range_resize_columns,
                 ),
-                code=read_file('y_axis_auto_range.js')
-            )
+                code=read_file('y_axis_auto_range.js'))
             self.p.x_range.js_on_change('start', y_axis_auto_range_callback)
             self.p.x_range.js_on_change('end', y_axis_auto_range_callback)
 
     def add_sources(self, df, name):
-        additional_sources = create_sources(
-            df, selected_from=self.selected_from, name=name)
+        additional_sources = create_sources(df,
+                                            selected_from=self.selected_from,
+                                            name=name)
         self.sources.update(additional_sources)
         return self.sources

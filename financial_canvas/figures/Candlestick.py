@@ -1,4 +1,3 @@
-
 from datetime import timedelta
 
 from bokeh.models import DatetimeTickFormatter
@@ -15,8 +14,14 @@ class Candlestick(CustomFigure):
         df: pandas DataFrame with datetime index and OHLC columns, 
         y_range_resize_columns (list of str): columns in df to resize y_range by
     '''
-
-    def __init__(self, df, *, selected_from=None, inc_color=None, dec_color=None, x_range=None, figure_args=None):
+    def __init__(self,
+                 df,
+                 *,
+                 selected_from=None,
+                 inc_color=None,
+                 dec_color=None,
+                 x_range=None,
+                 figure_args=None):
 
         # TODO: update dynamically
         self.y_range_resize_columns = ['open', 'high', 'low', 'close']
@@ -54,8 +59,8 @@ class Candlestick(CustomFigure):
         full_source = self.sources['main'][0]
         bokeh_figure = self.get_figure_defaults()
 
-        x_range = x_range if x_range else (
-            full_source.data['index'][0], full_source.data['index'][-1])
+        x_range = x_range if x_range else (full_source.data['index'][0],
+                                           full_source.data['index'][-1])
         if figure_args is None:
             figure_args = {}
         p = bokeh_figure(
@@ -70,8 +75,7 @@ class Candlestick(CustomFigure):
             # ValueError: expected an instance of type Range1d, got DataRange1d(id='1006', ...) of type DataRange1d
             # also used to set up initial zoom if passed
             x_range=x_range,
-            **figure_args
-        )
+            **figure_args)
 
         p.toolbar.logo = None
         p.x_range.min_interval = timedelta(days=1)
@@ -79,49 +83,61 @@ class Candlestick(CustomFigure):
         inc_color = inc_color if inc_color else COLOR_PALLETE[5]
         dec_color = dec_color if dec_color else COLOR_PALLETE[0]
 
-        ticks_formatter = DatetimeTickFormatter(
-            years=["%Y"],
-            days=["%d/%m/%Y"],
-            months=["%m/%Y"],
-            hours=["%H:%M"],
-            minutes=["%H:%M"]
-        )
+        ticks_formatter = DatetimeTickFormatter(years=["%Y"],
+                                                days=["%d/%m/%Y"],
+                                                months=["%m/%Y"],
+                                                hours=["%H:%M"],
+                                                minutes=["%H:%M"])
 
         # prep data source
         # Open - High - Low - Close
-        width_ms = dict(day=86400,
-                        hour=3600,
-                        minute=60,
-                        second=1)[inc_source.data['index'].resolution] * 1000 * .85
+        width_ms = dict(
+            day=86400, hour=3600, minute=60,
+            second=1)[inc_source.data['index'].resolution] * 1000 * .85
 
         self.candle_width = width_ms
 
-        p.add_tools(HoverTool(
-            tooltips=tooltips,
-            formatters=formatters,
-            mode='vline',
-            names=['inc_bar', 'dec_bar'],
-        ))
+        p.add_tools(
+            HoverTool(
+                tooltips=tooltips,
+                formatters=formatters,
+                mode='vline',
+                names=['inc_bar', 'dec_bar'],
+            ))
 
         # candlestick chart
-        p.segment('index', 'high', 'index', 'low',
+        p.segment('index',
+                  'high',
+                  'index',
+                  'low',
                   legend_label='OHLC',
                   color=dec_color,
                   source=dec_source)
-        p.segment('index', 'high', 'index', 'low',
+        p.segment('index',
+                  'high',
+                  'index',
+                  'low',
                   legend_label='OHLC',
                   color=inc_color,
                   source=inc_source)
 
-        p.vbar('index', width_ms, 'open', 'close',
+        p.vbar('index',
+               width_ms,
+               'open',
+               'close',
                legend_label='OHLC',
                name='dec_bar',
-               fill_color=dec_color, line_color=dec_color,
+               fill_color=dec_color,
+               line_color=dec_color,
                source=dec_source)
-        p.vbar('index', width_ms, 'open', 'close',
+        p.vbar('index',
+               width_ms,
+               'open',
+               'close',
                legend_label='OHLC',
                name='inc_bar',
-               fill_color=inc_color, line_color=inc_color,
+               fill_color=inc_color,
+               line_color=inc_color,
                source=inc_source)
 
         # legend

@@ -13,8 +13,13 @@ p.outline_line_color = None
 p.grid.grid_line_color = None
 
 # add a text renderer to the plot (no data yet)
-r = p.text(x=[], y=[], text=[], text_color=[], text_font_size="26px",
-           text_baseline="middle", text_align="center")
+r = p.text(x=[],
+           y=[],
+           text=[],
+           text_color=[],
+           text_font_size="26px",
+           text_baseline="middle",
+           text_align="center")
 
 i = 0
 
@@ -28,8 +33,8 @@ def callback():
 
     # BEST PRACTICE --- update .data in one step with a new dict
     new_data = dict()
-    new_data['x'] = ds.data['x'] + [random()*70 + 15]
-    new_data['y'] = ds.data['y'] + [random()*70 + 15]
+    new_data['x'] = ds.data['x'] + [random() * 70 + 15]
+    new_data['y'] = ds.data['y'] + [random() * 70 + 15]
     new_data['text_color'] = ds.data['text_color'] + [RdYlBu3[i % 3]]
     new_data['text'] = ds.data['text'] + [str(i)]
     ds.data = new_data

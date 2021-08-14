@@ -15,7 +15,6 @@ class FilteringDateRangeSlider(object):
     Attributes:
         s (bokeh.models.DateRangeSlider): 
     '''
-
     def __init__(self, target_figure=None):
 
         preselected_index = target_figure.sources['main'][0].data['index']
@@ -29,11 +28,12 @@ class FilteringDateRangeSlider(object):
         )
 
         resizable_sources = list(target_figure.sources.values())
-        date_range_slider.js_on_change("value", CustomJS(
-            args=dict(
+        date_range_slider.js_on_change(
+            "value",
+            CustomJS(args=dict(
                 sources_and_origins=resizable_sources,
                 x_range=target_figure.p.x_range,
             ),
-            code=read_file('update_render_range.js')))
+                     code=read_file('update_render_range.js')))
 
         self.s = date_range_slider

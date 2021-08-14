@@ -11,20 +11,20 @@ class PreviewSlider(CustomFigure):
     Args:
         target_figure (figures.CustomFigure): (optional) if passed will be resized with slider.
     '''
-
     def __init__(self, df, *, selected_from=None, target_figure=None):
         super().__init__(df, selected_from=selected_from)
 
         bokeh_figure = self.get_figure_defaults()
 
         p = bokeh_figure(
-            title="Drag the middle and edges of the selection box to change the range above",
+            title=
+            "Drag the middle and edges of the selection box to change the range above",
             plot_height=125,
             x_axis_type="datetime",
             y_axis_type=None,
-            tools="", toolbar_location=None,
-            background_fill_color="#efefef"
-        )
+            tools="",
+            toolbar_location=None,
+            background_fill_color="#efefef")
 
         if target_figure:
             range_tool = RangeTool(x_range=target_figure.p.x_range)
@@ -35,7 +35,8 @@ class PreviewSlider(CustomFigure):
             self.sources = target_figure.sources
 
         p.scatter(
-            'index', 'close',
+            'index',
+            'close',
             size=1,
             source=self.sources['main'][0],
         )

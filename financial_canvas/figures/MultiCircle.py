@@ -1,4 +1,3 @@
-
 from bokeh.models import DatetimeTickFormatter
 from bokeh.models.tools import HoverTool
 from financial_canvas.figures.constants import COLOR_PALLETE
@@ -12,8 +11,15 @@ class MultiCircle(CustomFigure):
     A figure with multiple circles. Each cirlce color corresponds to each column name
     docs for the form of the points: https://docs.bokeh.org/en/latest/docs/reference/models/glyphs/scatter.html#bokeh.models.glyphs.Scatter
     '''
-
-    def __init__(self, df, columns, *, selected_from=None, figure_args=None, scatter_args=None, colors=None, x_range=None):
+    def __init__(self,
+                 df,
+                 columns,
+                 *,
+                 selected_from=None,
+                 figure_args=None,
+                 scatter_args=None,
+                 colors=None,
+                 x_range=None):
         # TODO: update dynamically
         self.y_range_resize_columns = columns
 
@@ -48,8 +54,8 @@ class MultiCircle(CustomFigure):
         full_source = self.sources['main'][0]
         bokeh_figure = self.get_figure_defaults()
 
-        x_range = x_range if x_range else (
-            full_source.data['index'][0], full_source.data['index'][-1])
+        x_range = x_range if x_range else (full_source.data['index'][0],
+                                           full_source.data['index'][-1])
         p = bokeh_figure(
             x_axis_type="datetime",
             # x_axis_location="above",
@@ -67,36 +73,36 @@ class MultiCircle(CustomFigure):
 
         p.toolbar.logo = None
 
-        ticks_formatter = DatetimeTickFormatter(
-            years=["%Y"],
-            days=["%d/%m/%Y"],
-            months=["%m/%Y"],
-            hours=["%H:%M"],
-            minutes=["%H:%M"]
-        )
+        ticks_formatter = DatetimeTickFormatter(years=["%Y"],
+                                                days=["%d/%m/%Y"],
+                                                months=["%m/%Y"],
+                                                hours=["%H:%M"],
+                                                minutes=["%H:%M"])
 
-        p.add_tools(HoverTool(
-            tooltips=tooltips,
-            formatters=formatters,
-            mode='vline',
-            names=[columns[0]],
-        ))
+        p.add_tools(
+            HoverTool(
+                tooltips=tooltips,
+                formatters=formatters,
+                mode='vline',
+                names=[columns[0]],
+            ))
 
         # zero horizontal line
         zero_hline = Span(location=0,
-                          dimension='width', line_color='gray',
-                          line_dash='dashed', line_width=1)
+                          dimension='width',
+                          line_color='gray',
+                          line_dash='dashed',
+                          line_width=1)
         p.add_layout(zero_hline)
 
-        radius_ms = dict(day=86400,
-                        hour=3600,
-                        minute=60,
-                        second=1)[df.index.resolution] * 1000 * .85
+        radius_ms = dict(day=86400, hour=3600, minute=60,
+                         second=1)[df.index.resolution] * 1000 * .85
         for column, color in zip(columns, colors):
             # TODO: make resizable circles on zoom
             # specifying radius breaks onhover behavor
             updated_scatter_args = dict(
-                x='index', y=column,
+                x='index',
+                y=column,
                 legend_label=column,
                 name=column,
                 color=color,
@@ -104,9 +110,7 @@ class MultiCircle(CustomFigure):
                 source=full_source,
             )
             updated_scatter_args.update(scatter_args)
-            p.circle(
-                **updated_scatter_args,
-            )
+            p.circle(**updated_scatter_args, )
 
         # legend
         p.legend.location = "top_left"

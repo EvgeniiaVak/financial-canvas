@@ -1,4 +1,3 @@
-
 from bokeh.models import DatetimeTickFormatter
 from bokeh.models.tools import HoverTool
 from financial_canvas.figures.constants import COLOR_PALLETE
@@ -10,8 +9,14 @@ class Line(CustomFigure):
     '''
     Simple line chart with y axis autorange
     '''
-
-    def __init__(self, df, *, column_name, figure_args, selected_from=None, color=None, x_range=None):
+    def __init__(self,
+                 df,
+                 *,
+                 column_name,
+                 figure_args,
+                 selected_from=None,
+                 color=None,
+                 x_range=None):
 
         # TODO: update dynamically
         self.y_range_resize_columns = [column_name]
@@ -33,8 +38,8 @@ class Line(CustomFigure):
         full_source = self.sources['main'][0]
         bokeh_figure = self.get_figure_defaults()
 
-        x_range = x_range if x_range else (
-            full_source.data['index'][0], full_source.data['index'][-1])
+        x_range = x_range if x_range else (full_source.data['index'][0],
+                                           full_source.data['index'][-1])
         p = bokeh_figure(
             x_axis_type="datetime",
             # x_axis_location="above",
@@ -52,31 +57,33 @@ class Line(CustomFigure):
 
         p.toolbar.logo = None
 
-        ticks_formatter = DatetimeTickFormatter(
-            years=["%Y"],
-            days=["%d/%m/%Y"],
-            months=["%m/%Y"],
-            hours=["%H:%M"],
-            minutes=["%H:%M"]
-        )
+        ticks_formatter = DatetimeTickFormatter(years=["%Y"],
+                                                days=["%d/%m/%Y"],
+                                                months=["%m/%Y"],
+                                                hours=["%H:%M"],
+                                                minutes=["%H:%M"])
 
-        p.add_tools(HoverTool(
-            tooltips=tooltips,
-            formatters=formatters,
-            mode='vline',
-            names=['line'],
-        ))
+        p.add_tools(
+            HoverTool(
+                tooltips=tooltips,
+                formatters=formatters,
+                mode='vline',
+                names=['line'],
+            ))
 
         color = color if color else COLOR_PALLETE[2]
 
         # zero horizontal line
         zero_hline = Span(location=0,
-                          dimension='width', line_color='gray',
-                          line_dash='dashed', line_width=1)
+                          dimension='width',
+                          line_color='gray',
+                          line_dash='dashed',
+                          line_width=1)
         p.add_layout(zero_hline)
 
         # line chart
-        p.line('index', column_name,
+        p.line('index',
+               column_name,
                legend_label=column_name,
                name='line',
                line_color=color,

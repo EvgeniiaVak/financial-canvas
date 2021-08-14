@@ -1,3 +1,4 @@
 bokeh
 pandas
 seaborn
+yapf==0.31.0
