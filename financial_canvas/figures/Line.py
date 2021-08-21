@@ -1,8 +1,8 @@
-from bokeh.models import DatetimeTickFormatter
+from bokeh.models import DatetimeTickFormatter, Span
 from bokeh.models.tools import HoverTool
 from financial_canvas.figures.constants import COLOR_PALLETE
 from financial_canvas.figures.CustomFigure import CustomFigure
-from bokeh.models import Span
+import pandas as pd
 
 
 class Line(CustomFigure):
@@ -13,7 +13,7 @@ class Line(CustomFigure):
                  df,
                  *,
                  column_name,
-                 figure_args,
+                 figure_args=None,
                  selected_from=None,
                  color=None,
                  x_range=None):
@@ -23,16 +23,6 @@ class Line(CustomFigure):
 
         super().__init__(df, selected_from=selected_from)
 
-        tooltips = [
-            ('Date', '@index{%d/%m/%Y  %H:%M}'),
-            (column_name, '@' + column_name + '{%f}'),
-        ]
-
-        formatters = {
-            '@index': 'datetime',
-            '@' + column_name: 'printf',
-        }
-
         # using only sources (not origins) to build initial graphs
         # if switching to bokeh CDSView needs to be changed
         full_source = self.sources['main'][0]
@@ -40,9 +30,9 @@ class Line(CustomFigure):
 
         x_range = x_range if x_range else (full_source.data['index'][0],
                                            full_source.data['index'][-1])
-        p = bokeh_figure(
-            x_axis_type="datetime",
-            # x_axis_location="above",
+
+        default_fig_args = dict(
+            # x_axis_type="datetime",
             toolbar_location='right',
             tools="pan,wheel_zoom,box_zoom,save",
             active_drag='pan',
@@ -52,16 +42,36 @@ class Line(CustomFigure):
             # ValueError: expected an instance of type Range1d, got DataRange1d(id='1006', ...) of type DataRange1d
             # also used to set up initial zoom if passed
             x_range=x_range,
-            **figure_args,
         )
+        if figure_args is None:
+            figure_args = default_fig_args
+        else:
+            figure_args = default_fig_args.update(figure_args)
+        p = bokeh_figure(**figure_args)
 
         p.toolbar.logo = None
 
-        ticks_formatter = DatetimeTickFormatter(years=["%Y"],
-                                                days=["%d/%m/%Y"],
-                                                months=["%m/%Y"],
-                                                hours=["%H:%M"],
-                                                minutes=["%H:%M"])
+        index_tooltip = (df.index.name, '@index{%f}')
+        index_format = 'printf'
+        if isinstance(df.index, pd.DatetimeIndex):
+            index_tooltip = ('Date', '@index{%d/%m/%Y  %H:%M}')
+            index_format = 'datetime'
+            ticks_formatter = DatetimeTickFormatter(years=["%Y"],
+                                                    days=["%d/%m/%Y"],
+                                                    months=["%m/%Y"],
+                                                    hours=["%H:%M"],
+                                                    minutes=["%H:%M"])
+            p.xaxis.formatter = ticks_formatter
+
+        tooltips = [
+            index_tooltip,
+            (column_name, '@' + column_name + '{%f}'),
+        ]
+
+        formatters = {
+            '@index': index_format,
+            '@' + column_name: 'printf',
+        }
 
         p.add_tools(
             HoverTool(
@@ -95,7 +105,6 @@ class Line(CustomFigure):
 
         # layout
         # TODO: add to defaults
-        p.xaxis.formatter = ticks_formatter
         p.axis.minor_tick_line_color = None
         p.axis.major_tick_line_color = None
         p.outline_line_color = None
