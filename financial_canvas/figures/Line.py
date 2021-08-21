@@ -43,11 +43,9 @@ class Line(CustomFigure):
             # also used to set up initial zoom if passed
             x_range=x_range,
         )
-        if figure_args is None:
-            figure_args = default_fig_args
-        else:
-            figure_args = default_fig_args.update(figure_args)
-        p = bokeh_figure(**figure_args)
+        if figure_args is not None:
+            default_fig_args.update(figure_args)
+        p = bokeh_figure(**default_fig_args)
 
         p.toolbar.logo = None
 
