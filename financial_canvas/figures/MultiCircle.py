@@ -95,8 +95,8 @@ class MultiCircle(CustomFigure):
                           line_width=1)
         p.add_layout(zero_hline)
 
-        radius_ms = dict(day=86400, hour=3600, minute=60,
-                         second=1)[df.index.resolution] * 1000 * .85
+        # radius_ms = dict(day=86400, hour=3600, minute=60,
+        #                  second=1)[df.index.resolution] * 1000 * .85
         for column, color in zip(columns, colors):
             # TODO: make resizable circles on zoom
             # specifying radius breaks onhover behavor
